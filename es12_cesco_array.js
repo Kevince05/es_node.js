@@ -17,13 +17,10 @@ let obj = {
 };
 
 let max = -Infinity
-obg.values.forEach(e => {
-    max = find_max(e)
-})
 
 function find_max(e) {
     let tmp
-    switch (typeof (e)) {
+    switch (typeof(e)) {
         case 'string':
             tmp = Number.parseFloat(e)
             if (tmp > max) {
@@ -60,4 +57,21 @@ function find_max(e) {
     }
     return max
 }
-console.log("max: " + max)
+
+function print_arr(e) {
+    if (typeof e == "object") {
+        if (Array.isArray(e)) {
+            e.forEach(e_ => {
+
+                console.log(e_ + ", ")
+            });
+        } else {
+            Object.values(e).forEach(e_ => {
+                print_arr(e_)
+            });
+        }
+    }
+}
+
+print_arr(obj)
+console.log("max: " + find_max(obj))
