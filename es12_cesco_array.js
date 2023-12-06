@@ -1,24 +1,29 @@
-let array = [
-    "pippo",
-    "chuck",
-    "elvis",
-    "arnold",
-    false,
-    12.5,
-    { name: "pluto", age: 2640, foo: { n: 3476, b: 1873 } },
-    [1758, 2, 3],
-    100,
-    514,
-];
+let obj = {
+    name: "pippo",
+    surname: "chuck",
+    nickname: "elvis",
+    married: false,
+    age: 16,
+    bestfriend: { name: "pluto", age: 26, mah: [5, 4, 3, "pippo", true] },
+    num: [1, 2, 5],
+    foo: [
+        101,
+        102,
+        { name: "pluto", age: 26, mah: [5, 4, 3, "pippo", true] },
+        ["elvis", "richie", "marvin"],
+        104,
+        105,
+    ],
+};
 
 let max = -Infinity
-array.forEach(e => {
+obg.values.forEach(e => {
     max = find_max(e)
 })
 
 function find_max(e) {
     let tmp
-    switch (typeof(e)) {
+    switch (typeof (e)) {
         case 'string':
             tmp = Number.parseFloat(e)
             if (tmp > max) {
