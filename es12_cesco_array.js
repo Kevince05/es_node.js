@@ -20,7 +20,7 @@ let max = -Infinity
 
 function find_max(e) {
     let tmp
-    switch (typeof(e)) {
+    switch (typeof (e)) {
         case 'string':
             tmp = Number.parseFloat(e)
             if (tmp > max) {
@@ -61,10 +61,11 @@ function find_max(e) {
 function print_arr(e) {
     if (typeof e == "object") {
         if (Array.isArray(e)) {
+            tmp = "["
             e.forEach(e_ => {
-
-                console.log(e_ + ", ")
+                tmp += e_ + ", "
             });
+            console.log(tmp.substring(0, tmp.length - 2) + "]")
         } else {
             Object.values(e).forEach(e_ => {
                 print_arr(e_)

@@ -1,38 +1,43 @@
-const net = require("net");
+const net = require("net")
+const sockets = {}
 
-let cl = "";
-let buff = "";
 const sv = net.createServer((socket) => {
+    let buff = ""
     socket.on("data", (data) => {
-        buff += data;
+        buff += data
         if (buff.endsWith("\n")) {
-            switch (buff.trim()) {
-                case "quit":
-                    socket.end();
-                    break;
-                case "exit":
-                    socket.end();
-                    break;
-
-                default:
-                    socket.write(buff);
-                    buff = "";
-                    break;
+            if (socket.readyState === socket.OPEN) {
+                socket.write(buff)
             }
+            sv.emit(buff.trim().toString(), socket.remoteAddress + ":" + socket.remotePort)
+            buff = "";
         }
-    });
+    })
     socket.on("end", () => {
-        console.log(cl + "-disconnected ");
-        buff = "";
+        delete sockets[cl.toString()]
+        console.log(cl + " -- disconnected ")
+        buff = ""
     })
 
-});
+})
+
+sv.on("quit", (sock_key) => {
+    sockets[sock_key].end()
+    delete sockets[sock_key]
+})
+sv.on("exit", (sock_key) => {
+    sockets[sock_key].end()
+    delete sockets[sock_key]
+})
+sv.on("quitall", () => {
+    sockets.values.forEach(s => {
+        s.end()
+    })
+})
 
 sv.on("connection", (socket) => {
-    cl = "welcome " +
-        socket.remoteAddress == "::1" ? "localhost" : socket.remoteAddress.replace("::ffff", "") +
-        ":" + socket.remotePort;
-    socket.write(cl + "\r\n");
-});
+    socket.write((socket.remoteAddress === "::1" ? "localhost" : socket.remoteAddress.replace("::ffff", "")) + ":" + socket.remotePort + "\r\n")
+    sockets[socket.remoteAddress + ":" + socket.remotePort] = socket
+})
 
-sv.listen(7979);
+sv.listen(7979)
